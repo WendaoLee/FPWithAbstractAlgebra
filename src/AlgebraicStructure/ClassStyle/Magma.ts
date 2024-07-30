@@ -9,7 +9,7 @@
  * 原群的上的操作的定义。
  * 根据对应集合的不同，操作的实现可能会有所不同
  */
-interface MagmaOperation<T> {
+export interface MagmaOperation<T> {
     /**
      * 二元运算
      * @param a 
@@ -19,51 +19,30 @@ interface MagmaOperation<T> {
     directSum: (a: T, b: T) => T;
 }
 
-/**
- * 供给 class 使用的原群定义
- * 使用 setter 和 getter 来明确的表明这是一个值
- */
-export interface Magma<T> extends MagmaOperation<T> {
-    _val: T
-    get val(): T
-    set val(val: T)
-} 
+export abstract class Magma<T> implements MagmaOperation<T>{
+    /**
+     * 定义在原群上的二元运算
+     * @param a 
+     * @param b 
+     */
+    abstract directSum(a: T, b: T): T
+    /**
+     * 代表原群集合的某个元素， rep ∈ T
+     */
+    abstract rep:T 
+}
 
-export class NumbericMagma implements Magma<number>{
-    _val: number;
+/**
+ * 数值原群
+ */
+export class NumberMagma extends Magma<number>{
     directSum(a: number, b: number): number {
         return a + b
     }
+    rep:number = 0
 
-    constructor(val: number) {
-        this._val = val
-    }
-
-    get val() {
-        return this._val
-    }
-
-    set val(val: number) {
-        this._val = val
-    }
-}
-
-export class StringMagma implements Magma<string>{
-    _val: string;
-
-    directSum(a: string, b: string): string {
-        return a + b
-    }
-
-    constructor(val: string) {
-        this._val = val
-    }
-
-    get val() {
-        return this._val
-    }
-
-    set val(val: string) {
-        this._val = val
+    constructor(rep:number){
+        super()
+        this.rep = rep
     }
 }
