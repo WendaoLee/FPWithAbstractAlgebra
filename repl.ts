@@ -2,7 +2,7 @@ import repl from 'node:repl'
 // import * as ADS from '@/index.ts'
 
 const replServer = repl.start()
-console.log('通过 ADS 变量访问模块')
+console.log('通过 ADS 变量访问模块\n输入 .clean 重新加载模块')
 
 async function resetContext(){
     console.log('重新加载所有模块')

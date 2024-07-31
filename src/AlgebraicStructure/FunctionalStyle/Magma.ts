@@ -1,14 +1,11 @@
+import { match } from 'ts-pattern'
+
+
 /**
  * @inspiredBy fp-ts
  * 原群 (Magma) :=
  * 1. 存在一个集合 M
  * 2. 在集合 M 上定义了一个二元运算 ⊕ ，使得 ⊕:M x M -> M ,即对于任意 a, b ∈ S ，都有 a * b ∈ S，即具有封闭性的二元运算
- */
-import { match } from 'ts-pattern'
-
-
-/**
- * 原群的定义。
  * 根据对应集合的不同，操作的实现可能会有所不同
  */
 export interface Magma<M> {

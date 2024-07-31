@@ -1,13 +1,11 @@
+import { match } from "ts-pattern";
+import { Magma } from "./Magma.ts";
+
 /**
  * 半群 (Semigroup) :=
  * 1. 存在一个集合 M
  * 2. 在集合 M 上定义了一个二元运算 ⊕ ，使得 ⊕:M x M -> M ,即对于任意 a, b ∈ S ，都有 a * b ∈ S，即具有封闭性的二元运算
  * 3. 满足结合律
- */
-import { match } from "ts-pattern";
-import { Magma } from "./Magma.ts";
-
-/**
  * 半群 (Semigroup) 是原群，在满足原群的性质上，它还满足结合律
  */
 export interface Semigroup<M> extends Magma<M> {
@@ -34,7 +32,7 @@ export const SemigroupNumberWithAddition: Semigroup<number> = {
 }
 
 /**
- * 自函数
+ * 自函数 Endofunction
  */
 type Endofunction<A> = (a: A) => A
 
@@ -142,12 +140,12 @@ export const nesum: nesum = (a: NEList<number>): number => {
 /**
  * -------------------------------------------
  * 证明感觉没什么好写的，于是忽略了。
- * Left/Right Semigroup Operation
+ * Left/Right Semigroup Action
  * -------------------------------------------
  */
 
 /**
- * Left Semigroup Opeation,左半群作用。用于展示半群元素如何作用于集合元素
+ * Left Semigroup Action,左半群作用。用于展示半群元素如何作用于集合元素
  * 其中，M 代表半群，S 代表集合
  * ∙ : M × S → S
  * (x ⊕ y) ∙ s = x ∙ (y ∙ s)
@@ -155,7 +153,7 @@ export const nesum: nesum = (a: NEList<number>): number => {
  * 在这里，由于 Typescript 不存在 Semigroup => M 这样的对类型的约束，而实际上的运算是使用 Semigroup 中的成员，因此此处定义实际上并不精确
  * 合理的定义应该是 LeftSemigroupOperation<Semigroup => M, S> = (m:M, s: S) => S
  */
-export type LeftSemigroupOperation<M, S> = (m:M, s: S) => S
+export type LeftSemigroupAction<M, S> = (m:M, s: S) => S
 
 
 /**
@@ -167,15 +165,16 @@ export type Vector = {
 }
 
 /**
- * 向量的旋转是一个左半群作用, 旋转角度是一个数值半群
+ * 向量的旋转是一个左半群作用, 旋转角度是一个数值加法半群
  * @param m 数值半群
  * @param s 
  * @returns 
  */
-export const vectorRotation: LeftSemigroupOperation<number, Vector> = (m, s) => {
+export const vectorRotation: LeftSemigroupAction<number, Vector> = (m, s) => {
     // 计算旋转角度
     const radians = (m * Math.PI) / 180
     return {
+        // 避免精度以及-0的问题
         x:parseFloat((Math.cos(radians) * s.x - Math.sin(radians) * s.y).toFixed(2)) === -0?0:parseFloat((Math.cos(radians) * s.x - Math.sin(radians) * s.y).toFixed(2)),
         y:parseFloat((Math.sin(radians) * s.x + Math.cos(radians) * s.y).toFixed(2)) === -0?0:parseFloat((Math.sin(radians) * s.x + Math.cos(radians) * s.y).toFixed(2))
     }
@@ -183,17 +182,61 @@ export const vectorRotation: LeftSemigroupOperation<number, Vector> = (m, s) => 
 
 export const sampleVector = {x:1, y:0}
 
-export const sampleVectorRotated30 = vectorRotation(30, sampleVector)
-export const sampleVectorRotated60 = vectorRotation(60, sampleVector)
-export const sampleVectorRotated90 = vectorRotation(90, sampleVector)
-export const sampleVectorRotateAfter60Then30 = vectorRotation(30, vectorRotation(60, sampleVector))
 
 /**
- * 
+ * 对于JS中的对象，我们可以使用 JSON.stringify 来判断两个对象是否相等
+ * 否则会因为是引用比较，而导致无法得出正确结果
+ * @param a 
+ * @param b 
+ * @returns 
+ */
+export const equal = (a:Object, b:Object) => JSON.stringify(a) === JSON.stringify(b)
+
+/**
+ * 此处 ∙ 代表左半群作用
+ * 满足结合律
+ * (30 + 60) ∙ sampleVector = 30 ∙ (60 ∙ sampleVector)
  */
 export const sampleLeftSemigroupOperationOfVectorRoation = (
-    vectorRotation((30 + 60), {x:1, y:0}) == (vectorRotation(30, vectorRotation(60, {x:1, y:0})))
+    equal(
+        vectorRotation((30 + 60), sampleVector),
+        vectorRotation(30, vectorRotation(60, sampleVector))
+    )
 )
 
-export const equleLeft = vectorRotation((30 + 60), {x:1, y:0})
-export const equleRight = vectorRotation(30, vectorRotation(60, {x:1, y:0}))
+/**
+ * Right Semigroup Action,右半群作用。用于展示半群元素如何作用于集合元素
+ * 其中，M 代表半群，S 代表集合
+ * ∙ : S × M → S
+ */
+export type RightSemigroupAction<S, M> = (s: S, m: M) => S
+
+/**
+ * 幂等是一个右半群作用，幂等元素 N 是一个乘法半群，它作用在实数集上。
+ * ^ : R x N -> R
+ */
+export const N:Semigroup<number> = {
+    biOperation: (a, b) => a ** b,
+    associative(a, b, operation) {
+        return operation(operation(a, b), b) === operation(a, operation(b, a))
+    }
+}
+export const power: RightSemigroupAction<number, number> = (s, m) => s ** m
+export const sampleRightSemigroupOperationOfPower = (
+    power(2,(3*2)) === power(power(2,3),2)
+)
+
+/**
+ * 左半群作用和右半群作用实质上共同体现了半群的 结合性。
+ * 
+ * 对于左半群作用和右半群作用（统称为 Action）:
+ * · : M x S -> S
+ * 
+ * 实质上可以理解为使用一个 半群元素 和 一个集合元素 经过 Action 之后得到一个新的集合元素，即一个 M -> S -> S 的映射。
+ * 于是，我们可以这么理解 Action：M -> (S -> S)
+ * 
+ * 而 (S -> S, ∘) 又是一个半群，其中 ∘ 代表函数的复合。数学上称之为自同态群。
+ * 
+ * 故而，我们可以认为 Action 是一个到 (S -> S, ∘) 的同态态射，即 M -> (S -> S)。
+ * 这也就是所谓的 currying
+ */
