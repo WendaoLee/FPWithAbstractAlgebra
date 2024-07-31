@@ -16,7 +16,7 @@ export interface MagmaOperation<T> {
      * @param b 
      * @returns 
      */
-    directSum: (a: T, b: T) => T;
+    operation: (a: T, b: T) => T;
 }
 
 export abstract class Magma<T> implements MagmaOperation<T>{
@@ -25,7 +25,7 @@ export abstract class Magma<T> implements MagmaOperation<T>{
      * @param a 
      * @param b 
      */
-    abstract directSum(a: T, b: T): T
+    abstract operation(a: T, b: T): T
     /**
      * 代表原群集合的某个元素， rep ∈ T
      */
@@ -33,10 +33,11 @@ export abstract class Magma<T> implements MagmaOperation<T>{
 }
 
 /**
- * 数值原群
+ * 数值加法原群
+ * (Number,+)
  */
 export class NumberMagma extends Magma<number>{
-    directSum(a: number, b: number): number {
+    operation(a: number, b: number): number {
         return a + b
     }
     rep:number = 0
