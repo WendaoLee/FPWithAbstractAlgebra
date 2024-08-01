@@ -126,7 +126,9 @@ export const SemigroupNumberNEListWithContact: Semigroup<NEList<number>> = {
 
 /**
  * nesum :: NEList Int -> Int
- * 一个在 (NEList Int,contact) 和 (Int,+) 之间的同态态射
+ * 一个在 (NEList Int,contact) 和 (Int,+) 之间的同态态射（homomorphism）
+ * 同态态射是在代数结构之间保持结构的映射
+ * e.g. (A,·),(B,*) 如果它们存在同态态射 f:A->B, 那么对于任意 a,b ∈ A, f(a·b) = f(a) * f(b)
  */
 type nesum = (a: NEList<number>) => number
 export const nesum: nesum = (a: NEList<number>): number => {
