@@ -5,20 +5,20 @@ import { Magma } from "./Magma.ts";
  * 半群 (Semigroup) :=
  * 1. 存在一个集合 M
  * 2. 在集合 M 上定义了一个二元运算 ⊕ ，使得 ⊕:M x M -> M ,即对于任意 a, b ∈ S ，都有 a * b ∈ S，即具有封闭性的二元运算
- * 3. 满足结合律
+ * 3. 满足结合律，即对于任意 a, b, c ∈ M ，都有 (a ⊕ b) ⊕ c = a ⊕ (b ⊕ c)
  * 半群 (Semigroup) 是原群，在满足原群的性质上，它还满足结合律
  */
 export interface Semigroup<M> extends Magma<M> {
     /**
      * 半群应该满足结合结合律
      * 即 ∀ a, b, c ∈ M, (a ⊕ b) ⊕ c = a ⊕ (b ⊕ c)
-     * 很可惜 TypeScript 没有办法表达这个性质，所以这里只能用注释和一个使用起来没意义的类型注释
+     * 很可惜 TypeScript 没有办法表达这个性质，所以这里只能用注释和一个使用起来没意义的类型注释进行诠释
      * @param a 
      * @param b 
-     * @param c 
+     * @param biOpeation 半群自带的二元运算操作
      * @returns 
      */
-    associative: (a: M, b: M, operation: (arg0: M, arg1: M) => M) => boolean
+    associative: (a: M, b: M, biOpeation: (arg0: M, arg1: M) => M) => boolean
 }
 
 /**
@@ -26,8 +26,8 @@ export interface Semigroup<M> extends Magma<M> {
  */
 export const SemigroupNumberWithAddition: Semigroup<number> = {
     biOperation: (a: number, b: number): number => a + b,
-    associative(a, b, operation) {
-        return operation(operation(a, b), b) === operation(a, operation(b, a))
+    associative(a, b, biOperation) {
+        return biOperation(biOperation(a, b), b) === biOperation(a, biOperation(b, a))
     },
 }
 
@@ -37,12 +37,20 @@ export const SemigroupNumberWithAddition: Semigroup<number> = {
 type Endofunction<A> = (a: A) => A
 
 /**
- * 自函数组合（或者说 复合）半群
+ * 一个返回自身的数值自函数
+ * 这种自函数在数学上称之为恒等函数(identity function)
+ */
+export const identityNumberEndofunction: Endofunction<number> = (a: number) => a
+
+/**
+ * 自函数组合（或者说 复合）半群 <f , .>
+ * 此时，半群的集合是函数的集合，二元运算是函数的复合
+ * 因为 f:number -> number,g:number -> number,所以 f ∘ g:number -> number 恒成立
  */
 export const SemigroupNumberEndofunctionWithComposition: Semigroup<Endofunction<number>> = {
     biOperation: (f: Endofunction<number>, g: Endofunction<number>): Endofunction<number> => (a: number) => f(g(a)),
-    associative(a, b, operation) {
-        return operation(operation(a, b), b) === operation(a, operation(b, a))
+    associative(a, b, biOperation) {
+        return biOperation(biOperation(a, b), b) === biOperation(a, biOperation(b, a))
     }
 }
 

@@ -103,8 +103,9 @@ export const MagmaFullBinaryTreeWithFork: Magma<FullBinaryTree<number>> = {
 }
 
 /**
- * tsum :: Tree Number -> Number
+ * tsum :: FullBinaryTree Number -> Number
  * 实质上是一个在 <Tree Number,⊕> 和 <Number,⊕>之间的同态态射
+ * 这就是同态态射，在不同的代数结构之间保持彼此结构完整性的变换。
  */
 type tsum = (a: FullBinaryTree<number>) => number
 export const tsum: tsum = (a: FullBinaryTree<number>): number => {
