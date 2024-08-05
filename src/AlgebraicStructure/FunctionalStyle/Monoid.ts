@@ -140,7 +140,9 @@ export const MonoidEndofunctionWithComposition: Monoid<Endofunction> = {
  * 下面是关于 列表 的幺半群定义
  * -------------------------------------------
  */
-
+/**
+ * 因为 TS 的数组便是列表，因此这里直接使用 Array 了~
+ */
 type List<a> = Array<a>
 
 /**

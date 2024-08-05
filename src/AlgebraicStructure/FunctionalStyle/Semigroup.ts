@@ -63,6 +63,7 @@ export const SemigroupNumberEndofunctionWithComposition: Semigroup<Endofunction<
 /**
  * 非空列表 
  * data NEList a = Nil a | Cons a (NEList a)
+ * Nil 指示对应的元素是列表的末尾
  */
 type NEList<a> = Nil<a> | Cons<a>
 
@@ -93,6 +94,11 @@ const sampleNEList: NEList<number> = {
 
 /**
  * 非空列表的连接操作
+ * 此处改写为 Haskell 代码，为：
+ * instance Semigroup (NEList a) where 
+ *        Nil x     <> ys = Cons x ys 
+ *        Cons x xs <> ys = Cons x (xs <> ys)
+ * 上面的 <> 便是此处的 contact
  * @param pre 
  * @param next 
  * @returns 
@@ -155,7 +161,8 @@ export const nesum: nesum = (a: NEList<number>): number => {
  */
 
 /**
- * Left Semigroup Action,左半群作用。用于展示半群元素如何作用于集合元素
+ * Left Semigroup Action,左半群作用，或者说半群从左边作用。用于展示半群元素如何作用于集合元素
+ * 代数结构的作用的意义在于，它提供了一种视角，让我们可以把集合中的对象具有的行为看作是某种代数结构作用于集合的元素上。
  * 其中，M 代表半群，S 代表集合
  * ∙ : M × S → S
  * (x ⊕ y) ∙ s = x ∙ (y ∙ s)
