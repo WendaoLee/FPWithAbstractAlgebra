@@ -11,7 +11,7 @@
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest --config=jest.config.ts",
     "test:cover": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest --coverage",
     "clean": "rimraf dist",
-    "dev": "tsx watch src/index.ts",
+    "dev": "tsx watch repl.ts",
     "start": "tsc --noEmit && tsx src/index.ts",
     "type-check": "tsc --noEmit",
     "build": "npm run clean && babel src --extensions \".ts,.tsx,.js,.jsx\" --out-dir dist &&  tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json",
