@@ -18,6 +18,8 @@ jobs:
       - uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.ANTHROPIC_API_KEY }}
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           prompt: |
             请审查这个 PR 并使用 GitHub 审查系统提供内联反馈。请按照以下步骤操作：
             1.开始审查：使用 mcp__github__create_pending_pull_request_review 开始一个待处理的审查
