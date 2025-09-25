@@ -31,6 +31,8 @@ jobs:
             - 这段修改是否存在令人无法理解的逻辑
             - 是否存在潜在的性能隐患
 
+            永远使用内联评论进行有问题的代码片段的评论。
+
           claude_args: |
             --allowedTools "mcp__github__create_pending_pull_request_review,mcp__github__add_pull_request_review_comment_to_pending_review,mcp__github__submit_pending_pull_request_review,mcp__github__get_pull_request_diff"
           settings: |  
