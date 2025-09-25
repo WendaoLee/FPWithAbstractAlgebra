@@ -31,7 +31,7 @@ jobs:
             - 这段修改是否存在令人无法理解的逻辑
             - 是否存在潜在的性能隐患
 
-            永远使用内联评论进行有问题的代码片段的评论。
+            永远使用内联评论进行有问题的代码片段的评论。添加内联评论应该使用 mcp__github__add_pull_request_review_comment_to_pending_review 这个工具。
 
             关于这个项目的其他基础信息：
             - Owner: ${{ github.repository_owner }}
