@@ -1,0 +1,35 @@
+name: Claude Auto Review
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: |
+            请审查这个 PR 并使用 GitHub 审查系统提供内联反馈。请按照以下步骤操作：
+            1.开始审查：使用 mcp__github__create_pending_pull_request_review 开始一个待处理的审查
+            2.获取差异信息：使用 mcp__github__get_pull_request_diff 了解代码变更和行号
+            3.添加内联评论：使用 mcp__github__add_pull_request_review_comment_to_pending_review 对特定行的具体代码片段提供反馈
+            4.提交审查：使用 mcp__github__submit_pending_pull_request_review 并设置事件类型为 "COMMENT"（不是 "REQUEST_CHANGES"）来发布所有评论作为非阻塞性审查
+            请重点关注一下方面：
+            - 这段修改是否存在潜在的 bug 或安全问题
+            - 这段修改是否存在令人无法理解的逻辑
+            - 是否存在潜在的性能隐患
+
+          claude_args: |
+            --allowedTools "mcp__github__create_pending_pull_request_review,mcp__github__add_pull_request_review_comment_to_pending_review,mcp__github__submit_pending_pull_request_review,mcp__github__get_pull_request_diff"
+        env:
+            ANTHROPIC_BASE_URL: "https://open.bigmodel.cn/api/anthropic"
