@@ -24,14 +24,14 @@ jobs:
             请审查这个 PR 并使用 GitHub 审查系统提供内联反馈。请按照以下步骤操作：
             1.开始审查：使用 mcp__github__create_pending_pull_request_review 开始一个待处理的审查
             2.获取差异信息：使用 mcp__github__get_pull_request_diff 了解代码变更和行号
-            3.添加内联评论：使用 mcp__github__add_pull_request_review_comment_to_pending_review 对特定行的具体代码片段提供反馈
+            3.添加内联评论：使用 mcp__github__add_comment_to_pending_review 对特定行的具体代码片段提供反馈
             4.提交审查：使用 mcp__github__submit_pending_pull_request_review 并设置事件类型为 "COMMENT"（不是 "REQUEST_CHANGES"）来发布所有评论作为非阻塞性审查
             请重点关注一下方面：
             - 这段修改是否存在潜在的 bug 或安全问题
             - 这段修改是否存在令人无法理解的逻辑
             - 是否存在潜在的性能隐患
 
-            永远使用内联评论进行有问题的代码片段的评论。添加内联评论应该使用 mcp__github__add_pull_request_review_comment_to_pending_review 这个工具。
+            永远使用内联评论进行有问题的代码片段的评论。添加内联评论应该使用 mcp__github__add_comment_to_pending_review 这个工具。
 
             关于这个项目的其他基础信息：
             - Owner: ${{ github.repository_owner }}
@@ -43,7 +43,7 @@ jobs:
             - Pull Request Updated At: ${{ github.event.pull_request.updated_at }}
 
           claude_args: |
-            --allowedTools "mcp__github__get_pull_request,mcp__github__create_pending_pull_request_review,mcp__github__add_pull_request_review_comment_to_pending_review,mcp__github__submit_pending_pull_request_review,mcp__github__get_pull_request_diff"
+            --allowedTools "mcp__github__get_pull_request,mcp__github__create_pending_pull_request_review,mcp__github__add_comment_to_pending_review,mcp__github__submit_pending_pull_request_review,mcp__github__get_pull_request_diff"
           settings: |  
            {  
             "model": "glm-4.5"  
