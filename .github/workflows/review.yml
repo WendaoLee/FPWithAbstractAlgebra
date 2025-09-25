@@ -33,6 +33,15 @@ jobs:
 
             永远使用内联评论进行有问题的代码片段的评论。
 
+            关于这个项目的其他基础信息：
+            - Owner: ${{ github.repository_owner }}
+            - Repository: ${{ github.repository }}
+            - Pull Request: ${{ github.event.pull_request.number }}
+            - Pull Request Title: ${{ github.event.pull_request.title }}
+            - Pull Request Body: ${{ github.event.pull_request.body }}
+            - Pull Request Created At: ${{ github.event.pull_request.created_at }}
+            - Pull Request Updated At: ${{ github.event.pull_request.updated_at }}
+
           claude_args: |
             --allowedTools "mcp__github__get_pull_request,mcp__github__create_pending_pull_request_review,mcp__github__add_pull_request_review_comment_to_pending_review,mcp__github__submit_pending_pull_request_review,mcp__github__get_pull_request_diff"
           settings: |  
