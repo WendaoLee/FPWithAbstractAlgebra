@@ -17,7 +17,7 @@ jobs:
 
       - uses: anthropics/claude-code-action@v1
         with:
-          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          claude_code_oauth_token: ${{ secrets.ANTHROPIC_API_KEY }}
           prompt: |
             请审查这个 PR 并使用 GitHub 审查系统提供内联反馈。请按照以下步骤操作：
             1.开始审查：使用 mcp__github__create_pending_pull_request_review 开始一个待处理的审查
@@ -31,5 +31,9 @@ jobs:
 
           claude_args: |
             --allowedTools "mcp__github__create_pending_pull_request_review,mcp__github__add_pull_request_review_comment_to_pending_review,mcp__github__submit_pending_pull_request_review,mcp__github__get_pull_request_diff"
+          settings: |  
+           {  
+            "model": "glm-4.5"  
+           }
         env:
             ANTHROPIC_BASE_URL: "https://open.bigmodel.cn/api/anthropic"
