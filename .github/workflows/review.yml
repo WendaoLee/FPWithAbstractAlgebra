@@ -34,7 +34,7 @@ jobs:
             永远使用内联评论进行有问题的代码片段的评论。
 
           claude_args: |
-            --allowedTools "mcp__github__list_pull_requests,mcp__github__get_pull_request,mcp__github__create_pending_pull_request_review,mcp__github__add_pull_request_review_comment_to_pending_review,mcp__github__submit_pending_pull_request_review,mcp__github__get_pull_request_diff"
+            --allowedTools "mcp__github__get_pull_request,mcp__github__create_pending_pull_request_review,mcp__github__add_pull_request_review_comment_to_pending_review,mcp__github__submit_pending_pull_request_review,mcp__github__get_pull_request_diff"
           settings: |  
            {  
             "model": "glm-4.5"  
