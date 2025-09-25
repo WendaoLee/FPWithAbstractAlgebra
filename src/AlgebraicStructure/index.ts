@@ -1,2 +1,7 @@
 export * as Magma from './FunctionalStyle/Magma.ts'
 export * as Semigroup from './FunctionalStyle/Semigroup.ts'
+export * as Monoid from './FunctionalStyle/Monoid.ts'
+export * as Group from './FunctionalStyle/Group.ts'
+export * as AbelianGroup from './FunctionalStyle/AbelianGroup.ts'
+export * as Ring from './FunctionalStyle/Ring.ts'
+export * as Field from './FunctionalStyle/Field.ts'
